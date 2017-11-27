@@ -3,12 +3,20 @@ import logo from './logo.svg';
 import './App.css';
 import list from './list.js';
 
+// filter the results by search
+function isSearched(searchTerm){
+  return function(item){
+    return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  }
+}
+
 class App extends Component {
   
   constructor(props){
     super(props);
     this.state = {
-      list: list
+      list: list,
+      searchTerm: ''
     };
     this.removeItem = this.removeItem.bind(this);
     this.searchValue = this.searchValue.bind(this);
@@ -59,7 +67,7 @@ class App extends Component {
             <input type="text" onChange={ this.searchValue } />
           </form>
           {
-            this.state.list.map(item => 
+            this.state.list.filter(isSearched(this.state.searchTerm )).map(item => 
               <div key={item._id}>
               <h1>{item.title}</h1> by {item.name}
               on <span>{item.registered}</span> | {item.comments} comments 
