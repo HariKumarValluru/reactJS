@@ -55,6 +55,7 @@ class App extends Component {
 
 
   render() {
+    const {list, searchTerm} = this.state; // ES6 Destructuring
     return (
       <div className="App">
         <header className="App-header">
@@ -64,10 +65,10 @@ class App extends Component {
         <div className="App-intro">
           <br />
           <form>
-            <input type="text" onChange={ this.searchValue } />
+            <input type="text" onChange={ this.searchValue } value={ searchTerm } />
           </form>
           {
-            this.state.list.filter(isSearched(this.state.searchTerm )).map(item => 
+            list.filter(isSearched(searchTerm)).map(item => 
               <div key={item._id}>
               <h1>{item.title}</h1> by {item.name}
               on <span>{item.registered}</span> | {item.comments} comments 
