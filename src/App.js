@@ -11,6 +11,7 @@ class App extends Component {
       list: list
     };
     this.removeItem = this.removeItem.bind(this);
+    this.searchValue = this.searchValue.bind(this);
   }
 
   /*removeItem(_id) {
@@ -37,6 +38,14 @@ class App extends Component {
     this.setState({list:updatedList});
   }
 
+
+  // get input field value from search form
+  searchValue(event){
+    //console.log(event);
+    this.setState({ searchTerm: event.target.value });
+  }
+
+
   render() {
     return (
       <div className="App">
@@ -45,6 +54,10 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div className="App-intro">
+          <br />
+          <form>
+            <input type="text" onChange={ this.searchValue } />
+          </form>
           {
             this.state.list.map(item => 
               <div key={item._id}>
