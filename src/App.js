@@ -49,15 +49,13 @@ class App extends Component {
             onChange={ this.searchValue }
             value={ searchTerm }
           />
-          {
-            list.filter(isSearched(searchTerm)).map(item => 
-              <div key={item._id}>
-              <h1>{item.title}</h1> by {item.name}
-              on <span>{item.registered}</span> | {item.comments} comments 
-              <button type="button" onClick={()=>this.removeItem(item._id)}>Remove</button>
-              </div>
-            )
-          }
+
+          <Table
+            list = {list}
+            searchTerm = {searchTerm}
+            removeItem = {this.removeItem}
+          />
+          
         </div>
       </div>
     );
@@ -76,6 +74,25 @@ class Search extends Component{
           />
         </form>
       );
+  }
+}
+
+class Table extends Component{
+  render(){
+    const {list, searchTerm, removeItem} = this.props;
+    return (
+      <div>
+      {
+        list.filter(isSearched(searchTerm)).map(item => 
+          <div key={item._id}>
+          <h1>{item.title}</h1> by {item.name}
+          on <span>{item.registered}</span> | {item.comments} comments 
+          <button type="button" onClick={()=>removeItem(item._id)}>Remove</button>
+          </div>
+        )
+      }
+      </div>
+    )
   }
 }
 
