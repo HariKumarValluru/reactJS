@@ -22,25 +22,6 @@ class App extends Component {
     this.searchValue = this.searchValue.bind(this);
   }
 
-  /*removeItem(_id) {
-    console.log("Remove Item: "+_id);
-    // using javascript filter method
-    // we can filter out the clicked item and render the updated list
-    function isNotId(item) {
-      return item._id !== _id;
-    }
-    // create a new updated list
-    const updatedList = this.state.list.filter(isNotId);
-    // assign the new updated list to the list using setState method
-    this.setState({list:updatedList});
-  }*/
-
-  /*removeItem(_id){
-    const isNotId = item =>item._id!==_id;
-    const updatedList = this.state.list.filter(isNotId);
-    this.setState({list:updatedList});
-  }*/
-
   removeItem(_id){
     const updatedList = this.state.list.filter(item => item._id !== _id);
     this.setState({list:updatedList});
@@ -64,9 +45,10 @@ class App extends Component {
         </header>
         <div className="App-intro">
           <br />
-          <form>
-            <input type="text" onChange={ this.searchValue } value={ searchTerm } />
-          </form>
+          <Search
+            onChange={ this.searchValue }
+            value={ searchTerm }
+          />
           {
             list.filter(isSearched(searchTerm)).map(item => 
               <div key={item._id}>
@@ -79,6 +61,21 @@ class App extends Component {
         </div>
       </div>
     );
+  }
+}
+
+class Search extends Component{
+  render(){
+    const {onChange, value} = this.props;
+    return (
+        <form>
+          <input
+            type="text"
+            onChange={ onChange }
+            value={ value }
+          />
+        </form>
+      );
   }
 }
 
