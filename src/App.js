@@ -10,8 +10,21 @@ function isSearched(searchTerm){
   }
 }
 
-// Creating a component in a different way
+// Creating a component in a different way or Functional Stateless components
 const Button = ({onClick,children}) => <button onClick={onClick}>{children}</button>;
+const Search = ({onChange, value, children}) => {
+
+  return (
+        <form>
+          {children}
+          <input
+            type="text"
+            onChange={ onChange }
+            value={ value }
+          />
+        </form>
+      );
+}
 
 class App extends Component {
   
@@ -59,22 +72,6 @@ class App extends Component {
         </div>
       </div>
     );
-  }
-}
-
-class Search extends Component{
-  render(){
-    const {onChange, value, children} = this.props;
-    return (
-        <form>
-          {children}
-          <input
-            type="text"
-            onChange={ onChange }
-            value={ value }
-          />
-        </form>
-      );
   }
 }
 
