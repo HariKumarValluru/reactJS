@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import list from './list.js';
-import Button from './Button';
 
 // filter the results by search
 function isSearched(searchTerm){
@@ -10,6 +9,9 @@ function isSearched(searchTerm){
     return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
   }
 }
+
+// Creating a component in a different way
+const Button = ({onClick,children}) => <button onClick={onClick}>{children}</button>;
 
 class App extends Component {
   
@@ -84,8 +86,7 @@ class Table extends Component{
       {
         list.filter(isSearched(searchTerm)).map(item => 
           <div key={item._id}>
-          <h3>{item.title}</h3> by {item.name}
-          on <span>{item.registered}</span> | {item.comments} comments 
+          <h3>{item.title}</h3> by {item.name} | {item.comments} comments
           <Button type="button" onClick={()=>removeItem(item._id)}>Remove</Button>
           </div>
         )
