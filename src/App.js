@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import list from './list.js';
+import Button from './Button';
 
 // filter the results by search
 function isSearched(searchTerm){
@@ -85,7 +86,7 @@ class Table extends Component{
           <div key={item._id}>
           <h3>{item.title}</h3> by {item.name}
           on <span>{item.registered}</span> | {item.comments} comments 
-          <button type="button" onClick={()=>removeItem(item._id)}>Remove</button>
+          <Button type="button" onClick={()=>removeItem(item._id)}>Remove</Button>
           </div>
         )
       }
