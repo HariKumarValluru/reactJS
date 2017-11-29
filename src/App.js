@@ -39,10 +39,7 @@ class App extends Component {
     const {list, searchTerm} = this.state; // ES6 Destructuring
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
+        <img src={logo} className="App-logo" alt="logo" />
         <div className="App-intro">
           <br />
           <Search
@@ -86,7 +83,7 @@ class Table extends Component{
       {
         list.filter(isSearched(searchTerm)).map(item => 
           <div key={item._id}>
-          <h1>{item.title}</h1> by {item.name}
+          <h3>{item.title}</h3> by {item.name}
           on <span>{item.registered}</span> | {item.comments} comments 
           <button type="button" onClick={()=>removeItem(item._id)}>Remove</button>
           </div>
