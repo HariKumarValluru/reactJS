@@ -5,6 +5,17 @@ body {
 }
 
 .jumbotron{
-	background: linear-gradient(to right, red, yellow);
+	background-color: #000;
 	border-radius: 0 !important;
+}
+.searchForm{
+	height: 80px;
+	font-size: 50px;
+}
+.searchButton{
+	height: 80px;
+	font-size: 36px;
+}
+.btn{
+	margin-left: 5px;
 }

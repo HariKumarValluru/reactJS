@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import list from './list.js';
 import { Grid, Row, FormGroup } from 'react-bootstrap';
 
@@ -12,23 +11,24 @@ function isSearched(searchTerm){
 }
 
 // Creating a component in a different way or Functional Stateless components
-const Button = ({onClick,children}) => <button onClick={onClick}>{children}</button>;
+const Button = ({onClick,children,className}) => <button onClick={onClick} className={className}>{children}</button>;
 const Search = ({onChange, value, children}) => {
 
   return (
         <form>
         	<FormGroup>
-	          {children}
+	          <h1 style={{fontWeight: 'bold', color:'#0be6af'}}>{children}</h1>
+	          <hr style={{ border: '2px solid #ccc'}} />
 	          <div className="input-group">
 		          <input
-		          	className="form-control width100"
+		          	className="form-control width100 searchForm"
 		            type="text"
 		            onChange={ onChange }
 		            value={ value }
 		          />
 		          <span className="input-group-btn">
 		          	<button
-		          		className="btn btn-primary"
+		          		className="btn btn-primary searchButton"
 		          		type="submit"
 		          		>
 		          		Search
@@ -69,16 +69,16 @@ class App extends Component {
   render() {
     const {list, searchTerm} = this.state; // ES6 Destructuring
     return (
-      <div className="App">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div className="App-intro">
+      <div>
           <Grid fluid>
           	<Row>
-          		<div className="jumbotron">
+          		<div className="jumbotron text-center">
           			<Search
 			            onChange={ this.searchValue }
 			            value={ searchTerm }
-			          >Search here </Search>
+			          >
+			          NewsApp
+			        </Search>
           		</div>
           	</Row>
           </Grid>
@@ -87,8 +87,6 @@ class App extends Component {
             searchTerm = {searchTerm}
             removeItem = {this.removeItem}
           />
-          
-        </div>
       </div>
     );
   }
@@ -98,12 +96,12 @@ class Table extends Component{
   render(){
     const {list, searchTerm, removeItem} = this.props;
     return (
-      <div>
+      <div className="col-sm-10 col-sm-offset-1">
       {
         list.filter(isSearched(searchTerm)).map(item => 
           <div key={item._id}>
           <h3>{item.title}</h3> by {item.name} | {item.comments} comments
-          <Button type="button" onClick={()=>removeItem(item._id)}>Remove</Button>
+          <Button type="button" className="btn btn-danger btn-xs" onClick={()=>removeItem(item._id)}>Remove</Button>
           </div>
         )
       }
