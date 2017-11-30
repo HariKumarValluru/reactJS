@@ -51,8 +51,12 @@ class App extends Component {
   }
 
   removeItem(id){
-    const updatedList = this.state.list.filter(item => item.id !== id);
-    this.setState({list:updatedList});
+    const updatedList = this.state.result.hits.filter(item => item.objectID !== id);
+    //this.setState({result:updatedList});
+    // Object Assign operator
+    //this.setState({ result: Object.assign({}, this.state.result, {hits:updatedList}) });
+    // Spread Operator
+    this.setState({ result: {...this.state.result, hits:updatedList} });
   }
 
 
@@ -97,9 +101,9 @@ class Table extends Component{
       <div className="col-sm-10 col-sm-offset-1">
       {
         list.filter(isSearched(searchTerm)).map(item => 
-          <div key={item.objectId}>
+          <div key={item.objectID}>
           <h3><a href={item.url}>{item.title}</a></h3> by {item.author} | {item.comments} comments
-          <Button type="button" className="btn btn-danger btn-xs" onClick={()=>removeItem(item._id)}>Remove</Button>
+          <Button type="button" className="btn btn-danger btn-xs" onClick={()=>removeItem(item.objectID)}>Remove</Button>
           </div>
         )
       }
