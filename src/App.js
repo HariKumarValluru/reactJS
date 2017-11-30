@@ -10,13 +10,101 @@ const PARAM_SEARCH = 'query=';
 // Javascript concatination
 //const url = PATH_BASE + PATH_SEARCH + "?" + PARAM_SEARCH + DEFAULT_QUERY;
 // concatinate using ES6 template strings
-const url = `${PATH_BASE}${PARAM_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
+const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 console.log(url);
 
 // filter the results by search
 function isSearched(searchTerm){
   return function(item){
     return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  }
+}
+
+class App extends Component {
+  
+  constructor(props){
+    super(props);
+    this.state = {
+      result: null,
+      searchTerm: DEFAULT_QUERY
+    };
+    this.removeItem = this.removeItem.bind(this);
+    this.searchValue = this.searchValue.bind(this);
+    this.fetchTopStories = this.fetchTopStories.bind(this);
+    this.setTopStories = this.setTopStories.bind(this);
+  }
+
+  // set top stories
+  setTopStories(result){
+  	this.setState({result : result});
+  }
+  // fetch top stories
+  fetchTopStories(searchTerm){
+  	fetch(url).then(response => response.json())
+  			.then(result => this.setTopStories(result))
+  			.catch(e  => e);
+  }
+
+  // component did mount
+  componentDidMount(){
+  	this.fetchTopStories(this.state.searchTerm);
+  }
+
+  removeItem(id){
+    const updatedList = this.state.list.filter(item => item.id !== id);
+    this.setState({list:updatedList});
+  }
+
+
+  // get input field value from search form
+  searchValue(event){
+    //console.log(event);
+    this.setState({ searchTerm: event.target.value });
+  }
+
+
+  render() {
+    const {result, searchTerm} = this.state; // ES6 Destructuring
+    if(!result) return null;
+    return (
+      <div>
+          <Grid fluid>
+          	<Row>
+          		<div className="jumbotron text-center">
+          			<Search
+			            onChange={ this.searchValue }
+			            value={ searchTerm }
+			          >
+			          NewsApp
+			        </Search>
+          		</div>
+          	</Row>
+          </Grid>
+          <Table
+            list = {result.hits}
+            searchTerm = {searchTerm}
+            removeItem = {this.removeItem}
+          />
+      </div>
+    );
+  }
+}
+
+class Table extends Component{
+  render(){
+    const {list, searchTerm, removeItem} = this.props;
+    return (
+      <div className="col-sm-10 col-sm-offset-1">
+      {
+        list.filter(isSearched(searchTerm)).map(item => 
+          <div key={item.objectId}>
+          <h3><a href={item.url}>{item.title}</a></h3> by {item.author} | {item.comments} comments
+          <Button type="button" className="btn btn-danger btn-xs" onClick={()=>removeItem(item._id)}>Remove</Button>
+          </div>
+        )
+      }
+      </div>
+    )
   }
 }
 
@@ -49,75 +137,6 @@ const Search = ({onChange, value, children}) => {
           </FormGroup>
         </form>
       );
-}
-
-class App extends Component {
-  
-  constructor(props){
-    super(props);
-    this.state = {
-      list: list,
-      searchTerm: ''
-    };
-    this.removeItem = this.removeItem.bind(this);
-    this.searchValue = this.searchValue.bind(this);
-  }
-
-  removeItem(_id){
-    const updatedList = this.state.list.filter(item => item._id !== _id);
-    this.setState({list:updatedList});
-  }
-
-
-  // get input field value from search form
-  searchValue(event){
-    //console.log(event);
-    this.setState({ searchTerm: event.target.value });
-  }
-
-
-  render() {
-    const {list, searchTerm} = this.state; // ES6 Destructuring
-    return (
-      <div>
-          <Grid fluid>
-          	<Row>
-          		<div className="jumbotron text-center">
-          			<Search
-			            onChange={ this.searchValue }
-			            value={ searchTerm }
-			          >
-			          NewsApp
-			        </Search>
-          		</div>
-          	</Row>
-          </Grid>
-          <Table
-            list = {list}
-            searchTerm = {searchTerm}
-            removeItem = {this.removeItem}
-          />
-      </div>
-    );
-  }
-}
-
-class Table extends Component{
-  render(){
-    const {list, searchTerm, removeItem} = this.props;
-    return (
-      <div className="col-sm-10 col-sm-offset-1">
-      {
-        list.filter(isSearched(searchTerm)).map(item => 
-          <div key={item._id}>
-          <h3>{item.title}</h3> by {item.name} | {item.comments} comments
-          <Button type="button" className="btn btn-danger btn-xs" onClick={()=>removeItem(item._id)}>Remove</Button>
-          </div>
-        )
-      }
-      </div>
-    )
-  }
 }
 
 export default App;
