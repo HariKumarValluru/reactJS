@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import list from './list.js';
+import { Grid, Row, FormGroup } from 'react-bootstrap';
 
 // filter the results by search
 function isSearched(searchTerm){
@@ -16,12 +17,26 @@ const Search = ({onChange, value, children}) => {
 
   return (
         <form>
-          {children}
-          <input
-            type="text"
-            onChange={ onChange }
-            value={ value }
-          />
+        	<FormGroup>
+	          {children}
+	          <div className="input-group">
+		          <input
+		          	className="form-control width100"
+		            type="text"
+		            onChange={ onChange }
+		            value={ value }
+		          />
+		          <span className="input-group-btn">
+		          	<button
+		          		className="btn btn-primary"
+		          		type="submit"
+		          		>
+		          		Search
+		          	</button>
+
+		          </span>
+	          </div>
+          </FormGroup>
         </form>
       );
 }
@@ -57,12 +72,16 @@ class App extends Component {
       <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
         <div className="App-intro">
-          <br />
-          <Search
-            onChange={ this.searchValue }
-            value={ searchTerm }
-          >Search here </Search>
-
+          <Grid fluid>
+          	<Row>
+          		<div className="jumbotron">
+          			<Search
+			            onChange={ this.searchValue }
+			            value={ searchTerm }
+			          >Search here </Search>
+          		</div>
+          	</Row>
+          </Grid>
           <Table
             list = {list}
             searchTerm = {searchTerm}
