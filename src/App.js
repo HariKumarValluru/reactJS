@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import list from './list.js';
+//import list from './list.js';
 import { Grid, Row, FormGroup } from 'react-bootstrap';
 
 const DEFAULT_QUERY = 'react';
@@ -69,7 +69,7 @@ class App extends Component {
 
   render() {
     const {result, searchTerm} = this.state; // ES6 Destructuring
-    if(!result) return null;
+    //if(!result) return null;
     return (
       <div>
           <Grid fluid>
@@ -84,11 +84,13 @@ class App extends Component {
           		</div>
           	</Row>
           </Grid>
-          <Table
-            list = {result.hits}
-            searchTerm = {searchTerm}
-            removeItem = {this.removeItem}
-          />
+          { result &&
+          	<Table
+	            list = {result.hits}
+	            searchTerm = {searchTerm}
+	            removeItem = {this.removeItem}
+	          />
+          }
       </div>
     );
   }
