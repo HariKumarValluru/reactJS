@@ -32,6 +32,7 @@ class App extends Component {
     this.searchValue = this.searchValue.bind(this);
     this.fetchTopStories = this.fetchTopStories.bind(this);
     this.setTopStories = this.setTopStories.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   // set top stories
@@ -40,7 +41,8 @@ class App extends Component {
   }
   // fetch top stories
   fetchTopStories(searchTerm){
-  	fetch(url).then(response => response.json())
+  	fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  			.then(response => response.json())
   			.then(result => this.setTopStories(result))
   			.catch(e  => e);
   }
@@ -48,6 +50,12 @@ class App extends Component {
   // component did mount
   componentDidMount(){
   	this.fetchTopStories(this.state.searchTerm);
+  }
+
+  // on search submit button
+  onSubmit(event){
+  	this.fetchTopStories(this.state.searchTerm);
+  	event.preventDefault();
   }
 
   removeItem(id){
@@ -78,6 +86,7 @@ class App extends Component {
           			<Search
 			            onChange={ this.searchValue }
 			            value={ searchTerm }
+			            onSubmit = {this.onSubmit}
 			          >
 			          NewsApp
 			        </Search>
@@ -102,7 +111,8 @@ class Table extends Component{
     return (
       <div className="col-sm-10 col-sm-offset-1">
       {
-        list.filter(isSearched(searchTerm)).map(item => 
+        //list.filter(isSearched(searchTerm)).map(item => 
+        list.map(item => 
           <div key={item.objectID}>
           <h3><a href={item.url}>{item.title}</a></h3> by {item.author} | {item.comments} comments
           <Button type="button" className="btn btn-danger btn-xs" onClick={()=>removeItem(item.objectID)}>Remove</Button>
@@ -116,10 +126,10 @@ class Table extends Component{
 
 // Creating a component in a different way or Functional Stateless components
 const Button = ({onClick,children,className}) => <button onClick={onClick} className={className}>{children}</button>;
-const Search = ({onChange, value, children}) => {
+const Search = ({onChange, value, children, onSubmit}) => {
 
   return (
-        <form>
+        <form onSubmit={onSubmit}>
         	<FormGroup>
 	          <h1 style={{fontWeight: 'bold', color:'#0be6af'}}>{children}</h1>
 	          <hr style={{ border: '2px solid #ccc'}} />
